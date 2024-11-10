@@ -69,6 +69,10 @@
         const bulletImage = document.getElementById('bulletImage');
         const emptyImage = document.getElementById('emptyImage');
 
+        const audio_headshot = new Audio('./headshot.mp3'); 
+        const audio_empty = new Audio('./empty.mp3'); 
+
+
         let barrel = [];
         let bullets = 0;
         let bulletIndex = 0;
@@ -109,12 +113,14 @@
             bulletIndex++;
 
             if (shotResult === 1) {
+                audio_headshot.play();
                 gameResult.textContent = "Выстрел! О, нет! Патрон!";
                 bulletImage.style.display = 'block'; // Показываем картинку патрона
                 emptyImage.style.display = 'none';
                 bullets--;
                 currentBullets.textContent = bullets;
             } else {
+                audio_empty.play();
                 gameResult.textContent = "Выстрел! Пусто! Вы выжили!";
                 emptyImage.style.display = 'block'; // Показываем картинку пустого
                 bulletImage.style.display = 'none';
