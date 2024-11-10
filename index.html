@@ -70,8 +70,7 @@
         const emptyImage = document.getElementById('emptyImage');
 
         const audio_headshot = new Audio('./headshot.mp3'); 
-        const audio_empty = new Audio('./empty.mp3'); 
-
+        const audio_empty = [new Audio('./empty.mp3'), new Audio('./emptyA.mp3')]; 
 
         let barrel = [];
         let bullets = 0;
@@ -86,7 +85,7 @@
             }
             barrel = Array(6).fill(0); // Заполняем массив 0
             for (let i = 0; i < bullets; i++) {
-                barrel[getRandomInt(0, 5)] = 1; // Вставляем патроны случайным образом
+                barrel[i] = 1; // Вставляем патроны случайным образом
             }
             barrel = shuffleArray(barrel); // Перемешиваем массив
             bulletIndex = 0;
@@ -112,6 +111,7 @@
             const shotResult = barrel[bulletIndex];
             bulletIndex++;
 
+            stop_audio();
             if (shotResult === 1) {
                 audio_headshot.play();
                 gameResult.textContent = "Выстрел! О, нет! Патрон!";
@@ -119,8 +119,9 @@
                 emptyImage.style.display = 'none';
                 bullets--;
                 currentBullets.textContent = bullets;
+                
             } else {
-                audio_empty.play();
+                audio_empty[getRandomInt(0, audio_empty.length-1)].play();
                 gameResult.textContent = "Выстрел! Пусто! Вы выжили!";
                 emptyImage.style.display = 'block'; // Показываем картинку пустого
                 bulletImage.style.display = 'none';
@@ -146,6 +147,15 @@
                 [array[i], array[j]] = [array[j], array[i]]; // Swap
             }
             return array;
+        }
+
+        function stop_audio() {
+            audio_headshot.pause();
+            audio_headshot.currentTime = 0;
+            audio_empty.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
         }
     </script>
 </body>
